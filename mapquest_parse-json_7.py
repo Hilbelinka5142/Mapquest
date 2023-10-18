@@ -45,5 +45,28 @@ while True:
         print("https://developer.mapquest.com/documentation/directions-api/status-codes")
         print("************************************************************************\n")
 
+def get_current_location():
+    try:
+        # Usibg a service like ipinfo.io to get the user's IP address
+        response = requests.get('https://ipinfo.io')
+        data = response.json()
+        ip = data['ip']
+
+        
+        url = f'https://api.opencagedata.com/geocode/v1/json?q={ip}&key={API_KEY}'
+        response = requests.get(url)
+        data = response.json()
+
+        if data['status']['code'] == 200:
+            location = data['results'][0]
+            print(f"Your current location is: {location['formatted']}")
+        else:
+            print(f"Error: {data['status']['message']}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    get_current_location()
+
 
 
